@@ -9,7 +9,7 @@ function Login() {
 		const formDataObject = {};
 		for (let [key, value] of formData.entries()) {
 			formDataObject[key] = value;
-		}x
+		}
 
 		fetch("http://localhost:3000/login", {
 			method: "POST",
