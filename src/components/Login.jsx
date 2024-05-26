@@ -20,6 +20,7 @@ function Login() {
 			.then((data) => {
 				setData(data);
 				if (data.token) {
+					localStorage.setItem("JWT Token", data.token)
 					window.location.href = "/";
 				}
 			})
