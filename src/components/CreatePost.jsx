@@ -1,16 +1,20 @@
 function CreatePost() {
 	const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
+		event.preventDefault();
+		const JWTToken = localStorage.getItem("JWT Token");
+		const formData = new FormData(event.target);
 		const formDataObject = {};
 		for (let [key, value] of formData.entries()) {
 			formDataObject[key] = value;
 		}
 
-        fetch("http://localhost:3000/post", {
+		fetch("http://localhost:3000/post", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(formDataObject),
+			body: JSON.stringify({
+				formDataObject,
+				JWTToken,
+			}),
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -20,13 +24,13 @@ function CreatePost() {
 
 	return (
 		<div>
-            <form action="POST" onSubmit={handleSubmit}>
-                <label htmlFor="title">Title</label>
-                <input type="text" name="title"/>
-                <label htmlFor="text">Post</label>
-                <input type="text" name="text"/>
-                <button type="submit">Add Post</button>
-            </form>
+			<form action="POST" onSubmit={handleSubmit}>
+				<label htmlFor="title">Title</label>
+				<input type="text" name="title" />
+				<label htmlFor="text">Post</label>
+				<input type="text" name="text" />
+				<button type="submit">Add Post</button>
+			</form>
 		</div>
 	);
 }
