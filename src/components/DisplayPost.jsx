@@ -1,16 +1,30 @@
-import CreatePost from "./CreatePost.jsx"
+import CreatePost from "./CreatePost.jsx";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import FetchPost from "./FetchPost";
 
 function DisplayPost() {
-    const [published, setPublished] = useState();
+    const posts = FetchPost();
+    console.log(posts, 'this is posts')
 
-    const checkHandler = () => {
-        setPublished(!published)
-    }
+	const [published, setPublished] = useState();
+	// const JWTToken = localStorage.getItem("JWT Token");
+	const checkHandler = (e) => {
+		setPublished(!published);
+	};
 
-	const posts = FetchPost();
+	// fetch("http://localhost:3000/post", {
+	// 	method: "POST",
+	// 	headers: { "Content-Type": "application/json" },
+	// 	body: JSON.stringify({
+	// 		published,
+	// 		JWTToken,
+	// 	}),
+	// })
+	// 	.then((response) => response.json())
+	// 	.then((data) => {
+	// 		console.log(data, "this is data");
+	// 	});
 
 	return (
 		<div>
@@ -23,12 +37,19 @@ function DisplayPost() {
 								<li>{item.date}</li>
 								<li>{item.user.name}</li>
 								<li>{item.text}</li>
-                                <input type="checkbox" checked={published} onChange={checkHandler}/>Published
+								<li>
+									<input
+										type="checkbox"
+										checked={published}
+										onChange={checkHandler}
+									/>
+									{item.visibility}
+								</li>
 							</ul>
 						</div>
 					);
 				})}
-            <CreatePost />
+			<CreatePost />
 		</div>
 	);
 }
