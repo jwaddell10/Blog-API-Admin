@@ -9,7 +9,7 @@ function DisplayPost() {
 
 	const [published, setPublished] = useState();
 	// const JWTToken = localStorage.getItem("JWT Token");
-	const checkHandler = (e) => {
+	const checkHandler = () => {
 		setPublished(!published);
 	};
 
