@@ -5,7 +5,6 @@ import FetchPost from "./FetchPost";
 
 function DisplayPost() {
     const posts = FetchPost();
-    console.log(posts, 'this is posts')
 
 	const [published, setPublished] = useState();
 	// const JWTToken = localStorage.getItem("JWT Token");

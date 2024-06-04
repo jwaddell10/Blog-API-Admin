@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-//navbar, homepage title, home, login, signup,
-
 function NavBar() {
+	const token = localStorage.getItem("JWT Token");
+
 	return (
 		<>
 			<nav className="navbar">
@@ -14,9 +14,20 @@ function NavBar() {
 					<Link to="/post">
 						<li>All Blogs</li>
 					</Link>
-					<Link to="/login">
-						<li>Login</li>
+					<Link to="/about">
+						<li>About</li>
 					</Link>
+					{token ? (
+						<>
+							<li>
+								<Link to="/logout">Logout</Link>
+							</li>
+						</>
+					) : (
+						<Link to="/login">
+							<li>Login</li>
+						</Link>
+					)}
 					<Link to="/signup">
 						<li>Signup</li>
 					</Link>

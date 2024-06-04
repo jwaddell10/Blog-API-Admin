@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
+import { LoginContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
 	const [data, setData] = useState(null);
+	const navigate = useNavigate();
+
+	const { setIsUserLoggedIn } = useContext(LoginContext);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -18,15 +23,19 @@ function Login() {
 		})
 			.then((response) => response.json())
 			.then((data) => {
+				setIsUserLoggedIn(true);
 				setData(data);
 				if (data.token) {
-					localStorage.setItem("JWT Token", data.token)
-					window.location.href = "/";
+					localStorage.setItem("JWT Token", data.token);
+					navigate("/");
 				}
 			})
 			.catch((error) => {
 				console.error("Error:", error);
 			});
+	};
+	const SignupForm = () => {
+		window.location.href = "/signup";
 	};
 
 	return (
@@ -51,6 +60,9 @@ function Login() {
 					<div>{data.message}</div>
 				</div>
 			)}
+			<div onClick={SignupForm}>
+				Not a member? Click to create an account
+			</div>
 		</>
 	);
 }

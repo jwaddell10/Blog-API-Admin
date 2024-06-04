@@ -1,6 +1,8 @@
 import { useOptimistic, useState, useRef } from "react";
+import { redirect } from "react-router-dom";
 
 function Signup() {
+	const [signupData, setSignupData] = useState(null);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -17,7 +19,11 @@ function Signup() {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data, "this is data");
+				if (data.errors) {
+					setSignupData(data);
+				} else {
+					window.location.href = "/";
+				}
 			});
 	};
 
@@ -47,6 +53,7 @@ function Signup() {
 
 				<button type="submit">Submit</button>
 			</form>
+			{signupData && <div>{signupData.errors[0].msg}</div>}
 		</>
 	);
 }
