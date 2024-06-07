@@ -4,11 +4,11 @@ import { v4 as uuidv4 } from "uuid";
 import FetchPost from "./FetchPost";
 
 function DisplayPost({ posts }) {
-
+	
 	const [published, setPublished] = useState();
 	const [editing, setEditing] = useState(false);
-	const [activeIndex, setActiveIndex] = useState();
-	
+	// const [activeIndex, setActiveIndex] = useState();
+
 	let viewMode = {};
 	let editMode = {};
 	if (editing) {
@@ -20,17 +20,19 @@ function DisplayPost({ posts }) {
 	const checkHandler = () => {
 		setPublished(!published);
 	};
-	const handleEditing = (index) => {
-		setActiveIndex(index)
-		setEditing(!editing)
+	const handleEditing = () => {
+		// setActiveIndex(index);
+		setEditing(!editing);
 	};
 	return (
 		<div>
 			{posts &&
-				posts.map((item, index) => {
+				posts.map((item) => {
 					return (
 						<div key={uuidv4()}>
-							<ul style={editing && index === activeIndex ? editMode : viewMode}>
+							<ul
+								style={viewMode}
+							>
 								<li>{item.title}</li>
 								<li>{item.date}</li>
 								<li>{item.user.name}</li>
@@ -43,11 +45,17 @@ function DisplayPost({ posts }) {
 									/>
 									{item.visibility}
 								</li>
-								<button onClick={() => handleEditing(index)}>Edit</button>
+								<button onClick={handleEditing}>
+									Edit
+								</button>
 							</ul>
-							<ul style={editing && index === activeIndex ? viewMode : editMode}>
-								<CreatePost value={item.title} posts={posts}/>
-								<button onClick={() => handleEditing(index)}>Edit</button>
+							<ul
+								style={editMode}
+							>
+								<CreatePost value={item.title} posts={posts} />
+								<button onClick={handleEditing}>
+									Edit
+								</button>
 							</ul>
 						</div>
 					);
