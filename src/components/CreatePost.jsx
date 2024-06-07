@@ -1,7 +1,9 @@
 import { useState } from "react";
+// import FetchPost from "./FetchPost";
 
 function CreatePost() {
 	const [published, setPublished] = useState();
+	// const posts = FetchPost();
 
 	const checkHandler = () => {
 		setPublished(!published);

@@ -7,10 +7,12 @@ import DisplayPost from "./components/DisplayPost.jsx";
 import Login from "./components/Login.jsx";
 import Logout from "./components/Logout.jsx";
 import Signup from "./components/Signup.jsx";
+import FetchPost from "./components/FetchPost.jsx";
 
 export const LoginContext = createContext(null);
 
 function App() {
+	const posts = FetchPost();
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
 	const token = localStorage.getItem("JWT Token");
@@ -21,7 +23,7 @@ function App() {
 				<NavBar />
 				<Routes>
 					<Route path="/" element={<HomePage />}></Route>
-					<Route path="/post" element={<DisplayPost />}></Route>
+					<Route path="/post" element={<DisplayPost posts={posts}/>}></Route>
 					{token && (
 						<Route path="/logout" element={<Logout />}></Route>
 					)}
