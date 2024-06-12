@@ -22,7 +22,10 @@ function CreatePost() {
 
 		fetch("http://localhost:3000/post", {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers: {
+				"Content-Type": "application/json",
+				"authorization": `${JWTToken}`,
+			},
 			body: JSON.stringify({
 				formDataObject,
 				JWTToken,

@@ -7,9 +7,10 @@ function FetchPost() {
 			try {
 				const response = await fetch("http://localhost:3000/post");
 				const posts = await response.json();
+				console.log(posts, 'this is posts')
 				setBlogPosts(posts);
 			} catch (err) {
-				console.log(err, "this is err");
+				console.log("Error", err);
 			}
 		}
 		getPosts();

@@ -10,6 +10,7 @@ function DisplayPost({ posts }) {
 				posts.map((post, index) => (
 					<Post
 						key={index}
+						id={post._id}
 						title={post.title}
 						date={post.date}
 						name={post.user.name}
@@ -22,7 +23,7 @@ function DisplayPost({ posts }) {
 	);
 }
 
-function Post({ title, date, name, text, visibility }) {
+function Post({ id, title, date, name, text, visibility }) {
 	const [editing, setEditing] = useState(false);
 	const [published, setPublished] = useState(visibility);
 	const [formData, setFormData] = useState({
@@ -42,30 +43,41 @@ function Post({ title, date, name, text, visibility }) {
 		setEditing(!editing);
 	};
 
-	const handleSubmit = (event) => {
-		event.preventDefault()
-		console.log(formData, "this is formdata");
-		//have form data, take the title and such and send to backend
+	const handleSubmit = async (event) => {
+		event.preventDefault();
 		const JWTToken = localStorage.getItem("JWT Token");
-		const formDataTitle = formData.title;
-		const formDataText = formData.text;
+		const formData = event.target.elements
+		console.log(event.target)
+		const title = formData[0].value
+		const text = formData[1].value
+		const isPublished = event.target.elements[2].checked;
+		try {
+			const response = await fetch(
+				`http://localhost:3000/post/${id}`,
+				{
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${JWTToken}`
+					},
+					body: JSON.stringify({
+						title,
+						text,
+						published: isPublished,
+						JWTToken,
+					}),
+				}
+			);
 
-		const isPublished = event.target.elements[2].checked
+			if (!response.ok) {
+				throw new Error(`HTTP error ${response.status}`);
+			}
 
-		fetch("http://localhost:3000/post", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				formDataTitle,
-				JWTToken,
-				formDataText,
-				isPublished
-			}),
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				return data;
-			});
+			const data = await response.json();
+			console.log(data);
+		} catch (error) {
+			console.error("Error:", error);
+		}
 	};
 
 	return (
@@ -91,7 +103,6 @@ function Post({ title, date, name, text, visibility }) {
 					/>
 					Publish
 					<button type="submit">Add Post</button>
-					{/* <button onClick={handleSubmit}>Submit</button> */}
 				</form>
 			) : (
 				<>
