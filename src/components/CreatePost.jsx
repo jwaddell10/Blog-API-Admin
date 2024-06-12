@@ -3,7 +3,6 @@ import { useState } from "react";
 
 function CreatePost() {
 	const [published, setPublished] = useState();
-	// const posts = FetchPost();
 
 	const checkHandler = () => {
 		setPublished(!published);
@@ -20,7 +19,7 @@ function CreatePost() {
 
 		const isPublished = event.target.elements[2].value;
 
-		fetch("http://localhost:3000/post", {
+		fetch(import.meta.env.FETCH_POST_URL, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

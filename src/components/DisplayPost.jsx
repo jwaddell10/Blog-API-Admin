@@ -52,7 +52,7 @@ function Post({ id, title, date, name, text, visibility }) {
 		const isPublished = event.target.elements[2].checked;
 		setEditing(!editing);
 		try {
-			const response = await fetch(`http://localhost:3000/post/${id}`, {
+			const response = await fetch(import.meta.env.UPDATE_POST_URL, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -69,7 +69,6 @@ function Post({ id, title, date, name, text, visibility }) {
 			if (!response.ok) {
 				throw new Error(`HTTP error ${response.status}`);
 			}
-			// setEditing(editing)
 		} catch (error) {
 			console.error("Error:", error);
 		}
