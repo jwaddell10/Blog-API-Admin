@@ -4,6 +4,7 @@ function EditPost() {
     return (
         <DisplayPost>
             <button>Edit</button>
+            <button>Delete</button>
         </DisplayPost>
     )
 }

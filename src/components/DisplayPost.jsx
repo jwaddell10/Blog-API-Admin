@@ -46,35 +46,30 @@ function Post({ id, title, date, name, text, visibility }) {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const JWTToken = localStorage.getItem("JWT Token");
-		const formData = event.target.elements
-		console.log(event.target)
-		const title = formData[0].value
-		const text = formData[1].value
+		const formData = event.target.elements;
+		const title = formData[0].value;
+		const text = formData[1].value;
 		const isPublished = event.target.elements[2].checked;
+		setEditing(!editing);
 		try {
-			const response = await fetch(
-				`http://localhost:3000/post/${id}`,
-				{
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${JWTToken}`
-					},
-					body: JSON.stringify({
-						title,
-						text,
-						published: isPublished,
-						JWTToken,
-					}),
-				}
-			);
+			const response = await fetch(`http://localhost:3000/post/${id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${JWTToken}`,
+				},
+				body: JSON.stringify({
+					title,
+					text,
+					published: isPublished,
+					JWTToken,
+				}),
+			});
 
 			if (!response.ok) {
 				throw new Error(`HTTP error ${response.status}`);
 			}
-
-			const data = await response.json();
-			console.log(data);
+			// setEditing(editing)
 		} catch (error) {
 			console.error("Error:", error);
 		}
