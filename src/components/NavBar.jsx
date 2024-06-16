@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 function NavBar() {
 	const token = localStorage.getItem("JWT Token");
@@ -10,9 +10,6 @@ function NavBar() {
 				<ul>
 					<Link to="/">
 						<li>Home</li>
-					</Link>
-					<Link to="/post">
-						<li>All Blogs</li>
 					</Link>
 					<Link to="/about">
 						<li>About</li>

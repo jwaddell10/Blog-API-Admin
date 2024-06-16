@@ -12,7 +12,7 @@ function Signup() {
 			formDataObject[key] = value;
 		}
 
-		fetch("http://localhost:3000/signup", {
+		fetch(import.meta.env.SIGNUP_URL, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(formDataObject),

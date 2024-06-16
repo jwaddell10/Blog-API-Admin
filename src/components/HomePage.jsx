@@ -1,9 +1,9 @@
 import DisplayPost from "./DisplayPost";
 
-function HomePage() {
+function HomePage({ posts }) {
 	return (
 		<>
-			<DisplayPost />
+			<DisplayPost posts={posts}/>
 		</>
 	);
 }

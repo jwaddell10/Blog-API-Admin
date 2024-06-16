@@ -1,24 +1,54 @@
 import CreatePost from "./CreatePost.jsx";
-import { useState, useEffect } from "react";
+import Comment from "./Comment.jsx";
+import NavBar from "./NavBar.jsx";
+import { useState, useEffect, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
+import FetchSinglePost from "./FetchSinglePost.jsx";
+import DisplaySinglePost from "./DisplaySinglePost.jsx";
+import { Link, useNavigate } from "react-router-dom";
+import { PostContext } from "../App.jsx";
+import FetchPost from "./FetchPost.jsx";
 
-function DisplayPost({ posts }) {
-	console.log(posts, "this is posts");
+function DisplayPost() {
+	const posts = FetchPost();
+	const [data, setData] = useState(null);
+	const [singlePost, setSinglePost] = useState(null);
+
+	const fetchSinglePost = async (id) => {
+		const response = await fetch(`http://localhost:3000/post/${id}`);
+		const post = await response.json();
+		console.log(post, "post");
+		setSinglePost(post);
+	};
 	return (
 		<div>
-			{posts &&
+			{!singlePost &&
+				posts &&
 				posts.map((post, index) => (
-					<Post
-						key={index}
-						id={post._id}
-						title={post.title}
-						date={post.date}
-						name={post.user.name}
-						text={post.text}
-						visibility={post.visibility}
-					/>
+					<div key={index} onClick={() => fetchSinglePost(post._id)}>
+						<Post
+							key={index}
+							id={post._id}
+							title={post.title}
+							date={post.date}
+							name={post.user.name}
+							text={post.text}
+							visibility={post.visibility}
+						/>
+						{/* <Comment /> */}
+					</div>
 				))}
-			<CreatePost />
+			{singlePost && (
+				<>
+					<div>
+						<h1>{singlePost.title}</h1>
+						<h2>{singlePost.user.name}</h2>
+						<h2>{singlePost.date}</h2>
+						<p>{singlePost.text}</p>
+					</div>
+				</>
+			)}
+			{/* <CreatePost /> */}
 		</div>
 	);
 }
@@ -105,11 +135,13 @@ function Post({ id, title, date, name, text, visibility }) {
 					<li>{name}</li>
 					<li>{text}</li>
 					<li>{visibility}</li>
-					<input
-						type="checkbox"
-						checked={published}
-						onChange={checkHandler}
-					/>
+					<button
+						onClick={() => {
+							FetchSinglePost(id);
+						}}
+					>
+						Click here
+					</button>
 					<button onClick={handleEditing}>Edit</button>
 				</>
 			)}

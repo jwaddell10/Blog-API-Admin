@@ -16,7 +16,7 @@ function Login() {
 			formDataObject[key] = value;
 		}
 
-		fetch(import.meta.env.LOGIN_URL, {
+		fetch("http://localhost:3000/login", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(formDataObject),
