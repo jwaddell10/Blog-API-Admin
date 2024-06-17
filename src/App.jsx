@@ -22,8 +22,6 @@ function App() {
 	// const post = FetchSinglePost();
 	// console.log(post, 'thisis post')
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-	const [singlePost, setSinglePost] = useState(null);
-	console.log(singlePost, 'this is single post in app')
 	const [postId, setPostId] = useState(null);
 
 	// const post = FetchSinglePost(postId)
@@ -36,17 +34,14 @@ function App() {
 				<PostContext.Provider value={{ postId, setPostId }}>
 					<NavBar />
 					<Routes>
-						<Route
-							path="/"
-							element={<HomePage />}
-						></Route>
+						<Route path="/" element={<HomePage />}></Route>
+						<Route path="/post" element={<DisplayPost />}></Route>
+
 						<Route
 							path="/post"
-							element={<DisplayPost onClick={() => setSinglePost()}/>}
+							element={<DisplaySinglePost />}
 						></Route>
-						{singlePost && (
-							<Route path="/post" element={<DisplaySinglePost />}></Route>
-						)}
+
 						{token && (
 							<Route path="/logout" element={<Logout />}></Route>
 						)}

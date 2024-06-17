@@ -17,7 +17,7 @@ function DisplayPost() {
 	const fetchSinglePost = async (id) => {
 		const response = await fetch(`http://localhost:3000/post/${id}`);
 		const post = await response.json();
-		console.log(post, "post");
+		// console.log(post, "post");
 		setSinglePost(post);
 	};
 	return (
@@ -45,10 +45,11 @@ function DisplayPost() {
 						<h2>{singlePost.user.name}</h2>
 						<h2>{singlePost.date}</h2>
 						<p>{singlePost.text}</p>
+						<Comment />
 					</div>
 				</>
 			)}
-			{/* <CreatePost /> */}
+			<CreatePost />
 		</div>
 	);
 }

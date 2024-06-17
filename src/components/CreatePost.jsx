@@ -19,7 +19,7 @@ function CreatePost() {
 
 		const isPublished = event.target.elements[2].value;
 
-		fetch(import.meta.env.FETCH_POST_URL, {
+		fetch("http://localhost:3000/post", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
