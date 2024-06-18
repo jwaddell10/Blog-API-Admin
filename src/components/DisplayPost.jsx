@@ -13,19 +13,31 @@ function DisplayPost() {
 	const posts = FetchPost();
 	const [data, setData] = useState(null);
 	const [singlePost, setSinglePost] = useState(null);
+	const [comments, setComments] = useState(null);
 
 	const fetchSinglePost = async (id) => {
 		const response = await fetch(`http://localhost:3000/post/${id}`);
 		const post = await response.json();
-		// console.log(post, "post");
 		setSinglePost(post);
+
+		// Fetch comments for the selected post
+		const commentsResponse = await fetch(
+			`http://localhost:3000/comment?postId=${id}`
+		);
+		const comments = await commentsResponse.json();
+		setComments(comments);
 	};
 	return (
 		<div>
 			{!singlePost &&
 				posts &&
 				posts.map((post, index) => (
-					<div key={index} onClick={() => fetchSinglePost(post._id)}>
+					<div
+						key={index}
+						onClick={() => {
+							fetchSinglePost(post._id);
+						}}
+					>
 						<Post
 							key={index}
 							id={post._id}
@@ -45,6 +57,13 @@ function DisplayPost() {
 						<h2>{singlePost.user.name}</h2>
 						<h2>{singlePost.date}</h2>
 						<p>{singlePost.text}</p>
+						{comments &&
+							comments.map((comment, index) => (
+								<div key={index}>
+									<h3>{comment.user.name}</h3>
+									<h3>{comment.text}</h3>
+								</div>
+							))}
 						<Comment />
 					</div>
 				</>
