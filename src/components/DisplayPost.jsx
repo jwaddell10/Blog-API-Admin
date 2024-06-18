@@ -10,14 +10,29 @@ import { PostContext } from "../App.jsx";
 import FetchPost from "./FetchPost.jsx";
 
 function DisplayPost() {
+	const navigate = useNavigate();
 	const posts = FetchPost();
 	const [data, setData] = useState(null);
 	const [singlePost, setSinglePost] = useState(null);
 	const [comments, setComments] = useState(null);
 
+	const handleDeletePost = async (id) => {
+		const JWTToken = localStorage.getItem("JWT Token");
+		const response = await fetch(`http://localhost:3000/post/${id}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application.json",
+				Authorization: `${JWTToken}`,
+			},
+		});
+		const data = await response.json();
+		navigate("/")
+	};
+
 	const fetchSinglePost = async (id) => {
 		const response = await fetch(`http://localhost:3000/post/${id}`);
 		const post = await response.json();
+		console.log(post, "this is post");
 		setSinglePost(post);
 
 		// Fetch comments for the selected post
@@ -65,6 +80,13 @@ function DisplayPost() {
 								</div>
 							))}
 						<Comment />
+						<button
+							onClick={() => {
+								handleDeletePost(singlePost._id);
+							}}
+						>
+							Delete
+						</button>
 					</div>
 				</>
 			)}
@@ -160,7 +182,7 @@ function Post({ id, title, date, name, text, visibility }) {
 							FetchSinglePost(id);
 						}}
 					>
-						Click here
+						View Post
 					</button>
 					<button onClick={handleEditing}>Edit</button>
 				</>
