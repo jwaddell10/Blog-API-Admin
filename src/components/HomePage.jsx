@@ -3,7 +3,7 @@ import DisplayPost from "./DisplayPost";
 function HomePage({ posts }) {
 	return (
 		<>
-			<DisplayPost posts={posts}/>
+			<h1>Welcome to my blog</h1>
 		</>
 	);
 }

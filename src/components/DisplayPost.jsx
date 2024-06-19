@@ -3,13 +3,12 @@ import Comment from "./Comment.jsx";
 import NavBar from "./NavBar.jsx";
 import { useState, useEffect, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
-import FetchSinglePost from "./FetchSinglePost.jsx";
 import DisplaySinglePost from "./DisplaySinglePost.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { PostContext } from "../App.jsx";
 import FetchPost from "./FetchPost.jsx";
 
-function DisplayPost() {
+function DisplayPost({ postId, onStateChange }) {
 	const navigate = useNavigate();
 	const posts = FetchPost();
 	const [data, setData] = useState(null);
@@ -26,21 +25,24 @@ function DisplayPost() {
 			},
 		});
 		const data = await response.json();
-		navigate("/")
+		navigate("/");
+	};
+
+	const changeParentState = (id) => {
+		onStateChange(id);
 	};
 
 	const fetchSinglePost = async (id) => {
 		const response = await fetch(`http://localhost:3000/post/${id}`);
 		const post = await response.json();
-		console.log(post, "this is post");
 		setSinglePost(post);
+		navigate(`/post/${post._id}`);
 
-		// Fetch comments for the selected post
 		const commentsResponse = await fetch(
-			`http://localhost:3000/comment?postId=${id}`
+			`http://localhost:3000/${id}/comment`
 		);
-		const comments = await commentsResponse.json();
-		setComments(comments);
+		const postComments = await commentsResponse.json();
+		setComments(postComments);
 	};
 	return (
 		<div>
@@ -50,6 +52,7 @@ function DisplayPost() {
 					<div
 						key={index}
 						onClick={() => {
+							changeParentState(post._id);
 							fetchSinglePost(post._id);
 						}}
 					>
@@ -62,7 +65,6 @@ function DisplayPost() {
 							text={post.text}
 							visibility={post.visibility}
 						/>
-						{/* <Comment /> */}
 					</div>
 				))}
 			{singlePost && (
@@ -72,14 +74,17 @@ function DisplayPost() {
 						<h2>{singlePost.user.name}</h2>
 						<h2>{singlePost.date}</h2>
 						<p>{singlePost.text}</p>
-						{comments &&
+						{comments ? (
 							comments.map((comment, index) => (
 								<div key={index}>
 									<h3>{comment.user.name}</h3>
 									<h3>{comment.text}</h3>
 								</div>
-							))}
-						<Comment />
+							))
+						) : (
+							<><div>no comments</div></>
+						)}
+						<Comment id={singlePost._id}/>
 						<button
 							onClick={() => {
 								handleDeletePost(singlePost._id);
@@ -177,13 +182,6 @@ function Post({ id, title, date, name, text, visibility }) {
 					<li>{name}</li>
 					<li>{text}</li>
 					<li>{visibility}</li>
-					<button
-						onClick={() => {
-							FetchSinglePost(id);
-						}}
-					>
-						View Post
-					</button>
 					<button onClick={handleEditing}>Edit</button>
 				</>
 			)}

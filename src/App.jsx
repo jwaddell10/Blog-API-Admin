@@ -8,21 +8,21 @@ import Login from "./components/Login.jsx";
 import Logout from "./components/Logout.jsx";
 import Signup from "./components/Signup.jsx";
 import FetchPost from "./components/FetchPost.jsx";
-import SinglePost from "./components/FetchSinglePost.jsx";
-import DisplaySinglePost from "./components/DisplaySinglePost.jsx";
+// import SinglePost from "./components/FetchSinglePost.jsx";
+// import DisplaySinglePost from "./components/DisplaySinglePost.jsx";
 
 export const LoginContext = createContext(null);
-export const PostContext = createContext(null);
 
 function App() {
-	// const singlePost = FetchSinglePost();
-	// console.log(singlePost, 'this is singlepost')
 	const posts = FetchPost();
-	// console.log(post, 'this ispost in fetchsingle')
-	// const post = FetchSinglePost();
-	// console.log(post, 'thisis post')
+
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const [postId, setPostId] = useState(null);
+
+	const handleStateChange = (newState) => {
+		console.log(newState, "this is newstate");
+		setPostId(newState);
+	};
 
 	// const post = FetchSinglePost(postId)
 
@@ -31,28 +31,30 @@ function App() {
 	return (
 		<LoginContext.Provider value={{ isUserLoggedIn, setIsUserLoggedIn }}>
 			<Router>
-				<PostContext.Provider value={{ postId, setPostId }}>
-					<NavBar />
-					<Routes>
-						<Route path="/" element={<HomePage />}></Route>
-						<Route path="/post" element={<DisplayPost />}></Route>
-
+				<NavBar />
+				<Routes>
+					<Route path="/" element={<HomePage />}></Route>
+					<Route
+						path="/post"
+						element={
+							<DisplayPost
+								postId={postId}
+								onStateChange={handleStateChange}
+							/>
+						}
+					></Route>
+					{postId && (
 						<Route
-							path="/post"
-							element={<DisplaySinglePost />}
+							path={`/post/${postId}`}
+							element={<DisplayPost />}
 						></Route>
-
-						{token && (
-							<Route path="/logout" element={<Logout />}></Route>
-						)}
-						<Route path="/login" element={<Login />}></Route>
-						<Route path="/signup" element={<Signup />}></Route>
-						{/* <Route
-							path="/post/:postId"
-							element={<SinglePost />}
-						></Route> */}
-					</Routes>
-				</PostContext.Provider>
+					)}
+					{token && (
+						<Route path="/logout" element={<Logout />}></Route>
+					)}
+					<Route path="/login" element={<Login />}></Route>
+					<Route path="/signup" element={<Signup />}></Route>
+				</Routes>
 			</Router>
 		</LoginContext.Provider>
 	);

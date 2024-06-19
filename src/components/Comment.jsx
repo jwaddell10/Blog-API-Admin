@@ -1,4 +1,4 @@
-function Comment() {
+function Comment({id}) {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const JWTToken = localStorage.getItem("JWT Token");
@@ -7,9 +7,8 @@ function Comment() {
 		for (const [key, value] of formData.entries()) {
 			formDataObject[key] = value;
 		}
-		console.log(formDataObject, 'this is formdata')
 
-		fetch("http://localhost:3000/comment", {
+		fetch(`http://localhost:3000/${id}/comment`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
