@@ -1,17 +1,17 @@
 import CreatePost from "./CreatePost.jsx";
-import Comment from "./Comment.jsx";
-import NavBar from "./NavBar.jsx";
-import { useState, useEffect, useContext } from "react";
+import CreateComment from "./CreateComment.jsx";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import DisplaySinglePost from "./DisplaySinglePost.jsx";
+// import DisplaySinglePost from "./DisplaySinglePost.jsx";
+import DisplayComment from "./DisplayComment.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import { PostContext } from "../App.jsx";
 import FetchPost from "./FetchPost.jsx";
 
-function DisplayPost({ postId, onStateChange }) {
+function DisplayPost({ onStateChange }) {
+	//need to separate createcomment and display comments
+	//need to add edit/delete feature to comments
 	const navigate = useNavigate();
 	const posts = FetchPost();
-	const [data, setData] = useState(null);
 	const [singlePost, setSinglePost] = useState(null);
 	const [comments, setComments] = useState(null);
 
@@ -28,11 +28,11 @@ function DisplayPost({ postId, onStateChange }) {
 		navigate("/");
 	};
 
-	const changeParentState = (id) => {
+	const updatePostIdInParent = (id) => {
 		onStateChange(id);
 	};
 
-	const fetchSinglePost = async (id) => {
+	const fetchSinglePostAndComments = async (id) => {
 		const response = await fetch(`http://localhost:3000/post/${id}`);
 		const post = await response.json();
 		setSinglePost(post);
@@ -52,8 +52,8 @@ function DisplayPost({ postId, onStateChange }) {
 					<div
 						key={index}
 						onClick={() => {
-							changeParentState(post._id);
-							fetchSinglePost(post._id);
+							updatePostIdInParent(post._id);
+							fetchSinglePostAndComments(post._id);
 						}}
 					>
 						<Post
@@ -69,22 +69,17 @@ function DisplayPost({ postId, onStateChange }) {
 				))}
 			{singlePost && (
 				<>
+					<Post
+						id={singlePost._id}
+						title={singlePost.title}
+						date={singlePost.date}
+						name={singlePost.user.name}
+						text={singlePost.text}
+						visibility={singlePost.visibility}
+					></Post>
 					<div>
-						<h1>{singlePost.title}</h1>
-						<h2>{singlePost.user.name}</h2>
-						<h2>{singlePost.date}</h2>
-						<p>{singlePost.text}</p>
-						{comments ? (
-							comments.map((comment, index) => (
-								<div key={index}>
-									<h3>{comment.user.name}</h3>
-									<h3>{comment.text}</h3>
-								</div>
-							))
-						) : (
-							<><div>no comments</div></>
-						)}
-						<Comment id={singlePost._id}/>
+						<DisplayComment comments={comments}></DisplayComment>
+						<CreateComment id={singlePost._id} />
 						<button
 							onClick={() => {
 								handleDeletePost(singlePost._id);
@@ -112,7 +107,7 @@ function Post({ id, title, date, name, text, visibility }) {
 		setPublished(!published);
 	};
 
-	const handleChange = (event) => {
+	const updateFormData = (event) => {
 		setFormData(event.target.value);
 	};
 
@@ -159,13 +154,13 @@ function Post({ id, title, date, name, text, visibility }) {
 						type="text"
 						name="title"
 						value={formData.title}
-						onChange={handleChange}
+						onChange={updateFormData}
 					/>
 					<input
 						type="text"
 						name="text"
 						value={formData.text}
-						onChange={handleChange}
+						onChange={updateFormData}
 					/>
 					<input
 						type="checkbox"

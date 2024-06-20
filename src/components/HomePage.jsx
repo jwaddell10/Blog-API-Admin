@@ -1,6 +1,4 @@
-import DisplayPost from "./DisplayPost";
-
-function HomePage({ posts }) {
+function HomePage() {
 	return (
 		<>
 			<h1>Welcome to my blog</h1>

@@ -8,8 +8,6 @@ import Login from "./components/Login.jsx";
 import Logout from "./components/Logout.jsx";
 import Signup from "./components/Signup.jsx";
 import FetchPost from "./components/FetchPost.jsx";
-// import SinglePost from "./components/FetchSinglePost.jsx";
-// import DisplaySinglePost from "./components/DisplaySinglePost.jsx";
 
 export const LoginContext = createContext(null);
 
@@ -19,12 +17,9 @@ function App() {
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const [postId, setPostId] = useState(null);
 
-	const handleStateChange = (newState) => {
-		console.log(newState, "this is newstate");
-		setPostId(newState);
+	const updatePostId = (postId) => {
+		setPostId(postId);
 	};
-
-	// const post = FetchSinglePost(postId)
 
 	const token = localStorage.getItem("JWT Token");
 
@@ -39,7 +34,7 @@ function App() {
 						element={
 							<DisplayPost
 								postId={postId}
-								onStateChange={handleStateChange}
+								onStateChange={updatePostId}
 							/>
 						}
 					></Route>
