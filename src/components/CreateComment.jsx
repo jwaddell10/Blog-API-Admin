@@ -1,4 +1,4 @@
-function Comment({id}) {
+function CreateComment({id}) {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const JWTToken = localStorage.getItem("JWT Token");
@@ -35,4 +35,4 @@ function Comment({id}) {
 	);
 }
 
-export default Comment;
+export default CreateComment;

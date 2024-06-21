@@ -1,4 +1,8 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+	createBrowserRouter,
+	RouterProvider,
+	BrowserRouter as Router,
+} from "react-router-dom";
 import { useState, createContext } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar.jsx";
@@ -21,38 +25,57 @@ function App() {
 		setPostId(postId);
 	};
 
-	const token = localStorage.getItem("JWT Token");
-
-	return (
-		<LoginContext.Provider value={{ isUserLoggedIn, setIsUserLoggedIn }}>
-			<Router>
-				<NavBar />
-				<Routes>
-					<Route path="/" element={<HomePage />}></Route>
-					<Route
-						path="/post"
-						element={
-							<DisplayPost
-								postId={postId}
-								onStateChange={updatePostId}
-							/>
-						}
-					></Route>
-					{postId && (
-						<Route
-							path={`/post/${postId}`}
-							element={<DisplayPost />}
-						></Route>
-					)}
-					{token && (
-						<Route path="/logout" element={<Logout />}></Route>
-					)}
-					<Route path="/login" element={<Login />}></Route>
-					<Route path="/signup" element={<Signup />}></Route>
-				</Routes>
-			</Router>
-		</LoginContext.Provider>
-	);
+	const router = createBrowserRouter([
+		{
+			path: "/",
+			element: <NavBar />,
+			children: [
+				{
+					index: true,
+					element: <HomePage />,
+				},
+				{
+					path: "/post",
+					element: (
+						<DisplayPost
+							posts={posts}
+							postId={postId}
+							onStateChange={updatePostId}
+						/>
+					),
+				},
+				{
+					path: "/post/:postId",
+					element: <DisplayPost />,
+				},
+				{
+					path: "/signup",
+					element: <Signup />,
+				},
+				{
+					path: "/login",
+					element: (
+						<LoginContext.Provider
+							value={{ isUserLoggedIn, setIsUserLoggedIn }}
+						>
+							<Login />
+						</LoginContext.Provider>
+					),
+				},
+				{
+					path: "/logout",
+					element: (
+						<LoginContext.Provider
+							value={{ isUserLoggedIn, setIsUserLoggedIn }}
+						>
+							<Logout />{" "}
+						</LoginContext.Provider>
+					),
+				},
+			],
+		},
+	]);
+	return <RouterProvider router={router} />;
 }
 
 export default App;

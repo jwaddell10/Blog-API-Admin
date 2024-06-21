@@ -7,11 +7,10 @@ import DisplayComment from "./DisplayComment.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import FetchPost from "./FetchPost.jsx";
 
-function DisplayPost({ onStateChange }) {
+function DisplayPost({ onStateChange, posts }) {
 	//need to separate createcomment and display comments
 	//need to add edit/delete feature to comments
 	const navigate = useNavigate();
-	const posts = FetchPost();
 	const [singlePost, setSinglePost] = useState(null);
 	const [comments, setComments] = useState(null);
 
@@ -25,7 +24,7 @@ function DisplayPost({ onStateChange }) {
 			},
 		});
 		const data = await response.json();
-		navigate("/");
+		navigate("/post");
 	};
 
 	const updatePostIdInParent = (id) => {
@@ -78,14 +77,17 @@ function DisplayPost({ onStateChange }) {
 						visibility={singlePost.visibility}
 					></Post>
 					<div>
-						<DisplayComment comments={comments}></DisplayComment>
+						<DisplayComment
+							setComments={setComments}
+							postComments={comments}
+						></DisplayComment>
 						<CreateComment id={singlePost._id} />
 						<button
 							onClick={() => {
 								handleDeletePost(singlePost._id);
 							}}
 						>
-							Delete
+							Delete Post
 						</button>
 					</div>
 				</>
@@ -171,14 +173,14 @@ function Post({ id, title, date, name, text, visibility }) {
 					<button type="submit">Add Post</button>
 				</form>
 			) : (
-				<>
+				<div key={id}>
 					<li>{title}</li>
 					<li>{date}</li>
 					<li>{name}</li>
 					<li>{text}</li>
 					<li>{visibility}</li>
 					<button onClick={handleEditing}>Edit</button>
-				</>
+				</div>
 			)}
 		</>
 	);

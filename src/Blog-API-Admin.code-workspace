@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Blog-API"
+		},
+		{
+			"path": "../../Members-Only"
+		}
+	],
+	"settings": {}
+}
