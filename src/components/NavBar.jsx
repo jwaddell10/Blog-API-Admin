@@ -11,7 +11,7 @@ function NavBar() {
 					<Link to="/">
 						<li>Home</li>
 					</Link>
-					<Link to="/post">
+					<Link reloadDocument to="/post">
 						<li>All Blogs</li>
 					</Link>
 					<Link to="/about">
@@ -20,11 +20,11 @@ function NavBar() {
 					{token ? (
 						<>
 							<li>
-								<Link to="/logout">Logout</Link>
+								<Link reloadDocument to="/logout">Logout</Link>
 							</li>
 						</>
 					) : (
-						<Link to="/login">
+						<Link reloadDocument to="/login">
 							<li>Login</li>
 						</Link>
 					)}

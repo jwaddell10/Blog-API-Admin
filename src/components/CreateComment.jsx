@@ -1,4 +1,4 @@
-function CreateComment({id}) {
+function CreateComment({id, comments, setComments }) {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const JWTToken = localStorage.getItem("JWT Token");

@@ -9,7 +9,6 @@ function DisplayComment({ postComments, setComments }) {
 				Authorization: `${JWTToken}`,
 			},
 		});
-		const data = await response.json();
         if (response.ok) {
 			setComments((prevComments) => prevComments.filter((comment) => comment._id !== id));
         }

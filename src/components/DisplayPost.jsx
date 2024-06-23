@@ -4,10 +4,10 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 // import DisplaySinglePost from "./DisplaySinglePost.jsx";
 import DisplayComment from "./DisplayComment.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, redirect } from "react-router-dom";
 import FetchPost from "./FetchPost.jsx";
 
-function DisplayPost({ onStateChange, posts }) {
+function DisplayPost({ onStateChange, blogPosts }) {
 	//need to separate createcomment and display comments
 	//need to add edit/delete feature to comments
 	const navigate = useNavigate();
@@ -24,7 +24,11 @@ function DisplayPost({ onStateChange, posts }) {
 			},
 		});
 		const data = await response.json();
-		navigate("/post");
+		// console.log(data, 'this is data')
+		if (data) {
+			// return redirect("/post")
+			navigate("/post", { state: { key: "blogPosts" } });
+		}
 	};
 
 	const updatePostIdInParent = (id) => {
@@ -46,8 +50,8 @@ function DisplayPost({ onStateChange, posts }) {
 	return (
 		<div>
 			{!singlePost &&
-				posts &&
-				posts.map((post, index) => (
+				blogPosts &&
+				blogPosts.map((post, index) => (
 					<div
 						key={index}
 						onClick={() => {
@@ -78,10 +82,15 @@ function DisplayPost({ onStateChange, posts }) {
 					></Post>
 					<div>
 						<DisplayComment
+							refetchPosts={FetchPost}
 							setComments={setComments}
 							postComments={comments}
 						></DisplayComment>
-						<CreateComment id={singlePost._id} />
+						<CreateComment
+							comments={comments}
+							setComments={setComments}
+							id={singlePost._id}
+						/>
 						<button
 							onClick={() => {
 								handleDeletePost(singlePost._id);

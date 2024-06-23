@@ -16,7 +16,7 @@ import FetchPost from "./components/FetchPost.jsx";
 export const LoginContext = createContext(null);
 
 function App() {
-	const posts = FetchPost();
+	const {blogPosts, setBlogPosts} = FetchPost();
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const [postId, setPostId] = useState(null);
@@ -38,7 +38,7 @@ function App() {
 					path: "/post",
 					element: (
 						<DisplayPost
-							posts={posts}
+							blogPosts={blogPosts}
 							postId={postId}
 							onStateChange={updatePostId}
 						/>
