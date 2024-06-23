@@ -17,6 +17,7 @@ export const LoginContext = createContext(null);
 
 function App() {
 	const {blogPosts, setBlogPosts} = FetchPost();
+	console.log(blogPosts, 'this is blogposts')
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const [postId, setPostId] = useState(null);

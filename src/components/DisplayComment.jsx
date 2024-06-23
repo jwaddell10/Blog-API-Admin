@@ -1,5 +1,6 @@
-function DisplayComment({ postComments, setComments }) {
+import PropTypes from "prop-types";
 
+function DisplayComment({ postComments, setComments }) {
 	const deleteComment = async (id) => {
 		const JWTToken = localStorage.getItem("JWT Token");
 		const response = await fetch(`http://localhost:3000/comment/${id}`, {
@@ -9,9 +10,11 @@ function DisplayComment({ postComments, setComments }) {
 				Authorization: `${JWTToken}`,
 			},
 		});
-        if (response.ok) {
-			setComments((prevComments) => prevComments.filter((comment) => comment._id !== id));
-        }
+		if (response.ok) {
+			setComments((prevComments) =>
+				prevComments.filter((comment) => comment._id !== id)
+			);
+		}
 	};
 
 	return (
@@ -38,5 +41,10 @@ function DisplayComment({ postComments, setComments }) {
 		</>
 	);
 }
+
+DisplayComment.propTypes = {
+	postComments: PropTypes.array,
+	setComments: PropTypes.func,
+};
 
 export default DisplayComment;

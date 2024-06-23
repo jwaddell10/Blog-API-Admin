@@ -14,9 +14,6 @@ function NavBar() {
 					<Link reloadDocument to="/post">
 						<li>All Blogs</li>
 					</Link>
-					<Link to="/about">
-						<li>About</li>
-					</Link>
 					{token ? (
 						<>
 							<li>

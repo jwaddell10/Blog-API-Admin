@@ -1,15 +1,12 @@
 import CreatePost from "./CreatePost.jsx";
 import CreateComment from "./CreateComment.jsx";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-// import DisplaySinglePost from "./DisplaySinglePost.jsx";
 import DisplayComment from "./DisplayComment.jsx";
-import { Link, useNavigate, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FetchPost from "./FetchPost.jsx";
+import PropTypes from "prop-types";
 
 function DisplayPost({ onStateChange, blogPosts }) {
-	//need to separate createcomment and display comments
-	//need to add edit/delete feature to comments
 	const navigate = useNavigate();
 	const [singlePost, setSinglePost] = useState(null);
 	const [comments, setComments] = useState(null);
@@ -24,9 +21,7 @@ function DisplayPost({ onStateChange, blogPosts }) {
 			},
 		});
 		const data = await response.json();
-		// console.log(data, 'this is data')
 		if (data) {
-			// return redirect("/post")
 			navigate("/post", { state: { key: "blogPosts" } });
 		}
 	};
@@ -194,5 +189,19 @@ function Post({ id, title, date, name, text, visibility }) {
 		</>
 	);
 }
+
+DisplayPost.propTypes = {
+	blogPosts: PropTypes.array,
+	onStateChange: PropTypes.func,
+};
+
+Post.propTypes = {
+	id: PropTypes.string,
+	title: PropTypes.string,
+	date: PropTypes.string,
+	name: PropTypes.string,
+	text: PropTypes.string,
+	visibility: PropTypes.string,
+};
 
 export default DisplayPost;
