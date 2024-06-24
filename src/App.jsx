@@ -1,8 +1,4 @@
-import {
-	createBrowserRouter,
-	RouterProvider,
-	BrowserRouter as Router,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState, createContext } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar.jsx";
@@ -16,8 +12,7 @@ import FetchPost from "./components/FetchPost.jsx";
 export const LoginContext = createContext(null);
 
 function App() {
-	const {blogPosts, setBlogPosts} = FetchPost();
-	console.log(blogPosts, 'this is blogposts')
+	const { blogPosts } = FetchPost();
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const [postId, setPostId] = useState(null);

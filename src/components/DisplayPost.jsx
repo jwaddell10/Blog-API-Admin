@@ -5,6 +5,7 @@ import DisplayComment from "./DisplayComment.jsx";
 import { useNavigate } from "react-router-dom";
 import FetchPost from "./FetchPost.jsx";
 import PropTypes from "prop-types";
+import "./style.css";
 
 function DisplayPost({ onStateChange, blogPosts }) {
 	const navigate = useNavigate();
@@ -177,7 +178,7 @@ function Post({ id, title, date, name, text, visibility }) {
 					<button type="submit">Add Post</button>
 				</form>
 			) : (
-				<div key={id}>
+				<div key={id} style={{ listStyleType: "none" }}>
 					<li>{title}</li>
 					<li>{date}</li>
 					<li>{name}</li>
